@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Asesmen Sumatif Kimia XII</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2b2a4c; --muted:#6b6a8c; --line:#e7e4f5;
+  --purple:#7c4dff; --purple-d:#5b34d6; --pink:#ff5c8a; --orange:#ff9f1c;
+  --teal:#00b894; --blue:#3da5ff; --yellow:#ffd23f; --card:#ffffff;
+  --radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--ink); font-family:'Nunito',system-ui,sans-serif; font-size:16px; line-height:1.55;
+  background:linear-gradient(160deg,#fff6d6 0%,#ffe4f1 38%,#e1f1ff 100%) fixed;
+  min-height:100vh;
+}
+h1,h2,h3{font-family:'Fredoka','Nunito',sans-serif; margin:0}
+.hidden{display:none!important}
+.deco{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0}
+.deco span{position:absolute; font-size:42px; opacity:.16; animation:float 9s ease-in-out infinite}
+.deco span:nth-child(1){left:6%; top:12%}
+.deco span:nth-child(2){right:8%; top:20%; animation-delay:1.5s}
+.deco span:nth-child(3){left:12%; bottom:14%; animation-delay:3s}
+.deco span:nth-child(4){right:14%; bottom:10%; animation-delay:4.5s}
+.deco span:nth-child(5){left:48%; top:6%; animation-delay:2s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-18px) rotate(6deg)}}
+main{position:relative; z-index:1}
+.wrap{max-width:860px; margin:0 auto; padding:24px 16px 80px}
+
+/* ---------- kartu & tombol ---------- */
+.card{background:var(--card); border-radius:var(--radius); padding:24px; box-shadow:0 10px 30px rgba(91,52,214,.12); border:3px solid #fff}
+.btn{
+  font:700 17px 'Fredoka',sans-serif; letter-spacing:.2px; border:0; cursor:pointer; color:#fff;
+  padding:14px 26px; border-radius:999px; background:linear-gradient(135deg,var(--purple),var(--pink));
+  box-shadow:0 6px 0 var(--purple-d); transition:transform .08s, box-shadow .08s;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(4px); box-shadow:0 2px 0 var(--purple-d)}
+.btn[disabled]{opacity:.6; cursor:wait}
+.btn.green{background:linear-gradient(135deg,#00b894,#55efc4); color:#06382e; box-shadow:0 6px 0 #00896f}
+.btn.ghost{background:#fff; color:var(--purple-d); box-shadow:0 4px 0 var(--line); border:2px solid var(--line)}
+.btn.big{font-size:22px; padding:18px 40px}
+label.f{display:block; font-weight:800; margin:16px 0 6px}
+input.t{
+  width:100%; font:600 18px 'Nunito',sans-serif; padding:14px 18px; color:var(--ink);
+  border:3px solid var(--line); border-radius:16px; outline:none; background:#fbfaff;
+}
+input.t:focus{border-color:var(--purple); background:#fff; box-shadow:0 0 0 5px rgba(124,77,255,.15)}
+.err{color:#d6336c; font-weight:800; min-height:1.5em; margin-top:10px}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
+/* ---------- login / intro ---------- */
+.hero{text-align:center; margin-bottom:18px}
+.hero .mascot{font-size:64px; line-height:1; animation:bounce 2.2s ease-in-out infinite; display:inline-block}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero h1{font-size:clamp(28px,6vw,40px); color:var(--purple-d); margin-top:6px}
+.hero p{margin:6px 0 0; color:var(--muted); font-weight:700}
+.chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px}
+.chip{padding:6px 14px; border-radius:999px; font-weight:800; font-size:14px; background:#fff; border:2px solid var(--line)}
+.chip.c1{background:#e9e1ff; border-color:#d4c6ff}
+.chip.c2{background:#ffe7b8; border-color:#ffd58a}
+.chip.c3{background:#d3f5ea; border-color:#a6e8d2}
+.rules{counter-reset:r; list-style:none; padding:0; margin:14px 0 0}
+.rules li{counter-increment:r; position:relative; padding:10px 12px 10px 52px; margin-bottom:8px; background:#faf8ff; border-radius:14px}
+.rules li::before{
+  content:counter(r); position:absolute; left:10px; top:8px; width:32px; height:32px; border-radius:50%;
+  display:grid; place-items:center; font:700 16px 'Fredoka',sans-serif; color:#fff; background:var(--purple);
+}
+.rules li:nth-child(3n+2)::before{background:var(--pink)}
+.rules li:nth-child(3n)::before{background:var(--orange)}
+.note{background:#fff4d6; border-left:6px solid var(--orange); padding:12px 16px; border-radius:12px; margin-top:12px; font-weight:700}
+.tokenbox{margin-top:20px; padding:20px; border-radius:18px; background:linear-gradient(135deg,#efe9ff,#ffe9f2); border:3px dashed var(--purple)}
+.tokenbox input.t{text-align:center; letter-spacing:6px; text-transform:uppercase; font-size:24px; font-family:'Fredoka',sans-serif}
+
+/* ---------- ujian ---------- */
+.topbar{
+  position:sticky; top:0; z-index:20; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+  box-shadow:0 6px 20px rgba(91,52,214,.14); border-bottom:4px solid var(--yellow);
+}
+.topin{max-width:860px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+.who{flex:1; min-width:160px; font-weight:800}
+.who small{display:block; color:var(--muted); font-weight:700}
+.pill{padding:6px 14px; border-radius:999px; font:600 16px 'Fredoka',sans-serif; background:#e9e1ff; color:var(--purple-d); white-space:nowrap}
+.pill.time{background:#d3f5ea; color:#04664f}
+.pill.time.low{background:#ffd9d9; color:#b3002d; animation:pulse 1s infinite}
+.pill.warn{background:#ffe7b8; color:#8a4b00}
+@keyframes pulse{50%{transform:scale(1.07)}}
+.bar{height:8px; background:#efeafd}
+.bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--teal),var(--blue),var(--purple)); transition:width .3s}
+.nav{max-width:860px; margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin}
+.nav a{
+  flex:0 0 auto; width:34px; height:34px; border-radius:10px; display:grid; place-items:center; text-decoration:none;
+  font:600 14px 'Fredoka',sans-serif; color:var(--muted); background:#f1eefb; border:2px solid transparent;
+}
+.nav a.part{background:#fff4d6; color:#8a4b00}
+.nav a.full{background:var(--teal); color:#fff}
+.nav a.sep{width:6px; background:transparent; border:0}
+
+.sec{margin:28px 0 14px; padding:18px 22px; border-radius:var(--radius); color:#fff; box-shadow:0 8px 0 rgba(0,0,0,.08)}
+.sec h2{font-size:26px}
+.sec p{margin:4px 0 0; font-weight:700; opacity:.95}
+.sec.a{background:linear-gradient(135deg,#7c4dff,#3da5ff)}
+.sec.b{background:linear-gradient(135deg,#ff9f1c,#ff5c8a)}
+.sec.c{background:linear-gradient(135deg,#00b894,#3da5ff)}
+
+.q{margin-bottom:18px; scroll-margin-top:150px; border-top:8px solid var(--purple); padding:20px 22px}
+.q.bs{border-top-color:var(--orange)}
+.q.pgk{border-top-color:var(--teal)}
+.qh{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+.qno{font:700 18px 'Fredoka',sans-serif; background:var(--purple); color:#fff; border-radius:12px; padding:4px 14px}
+.q.bs .qno{background:var(--orange)} .q.pgk .qno{background:var(--teal)}
+.score{font-weight:800; font-size:14px; background:#fff4cf; color:#8a5a00; padding:4px 12px; border-radius:999px; border:2px solid #ffe08a}
+.status{margin-left:auto; font-weight:800; font-size:13px; color:var(--muted)}
+.status.ok{color:#079a77}
+.body p{margin:0 0 10px}
+.rx{
+  background:#f4f0ff; border-radius:12px; padding:10px 16px; margin:10px 0; font-weight:700; overflow-x:auto;
+  font-family:'Nunito',sans-serif; text-align:center;
+}
+.q .ask{font-weight:800; margin:12px 0 8px}
+table.d{border-collapse:collapse; margin:10px auto; font-size:15px; max-width:100%}
+table.d th{background:var(--purple); color:#fff; padding:8px 14px; font-weight:800}
+table.d td{padding:7px 14px; border:2px solid var(--line); text-align:center}
+table.d tr:nth-child(even) td{background:#faf8ff}
+.tablewrap{overflow-x:auto}
+
+.opt{display:flex; gap:12px; align-items:flex-start; padding:10px 14px; margin:8px 0; border:3px solid var(--line); border-radius:16px; cursor:pointer; background:#fff; transition:.12s}
+.opt:hover{border-color:#cfc2ff; background:#faf8ff}
+.opt input{position:absolute; opacity:0; pointer-events:none}
+.opt .l{
+  flex:0 0 auto; width:34px; height:34px; border-radius:50%; display:grid; place-items:center;
+  font:700 16px 'Fredoka',sans-serif; background:#efeafd; color:var(--purple-d);
+}
+.opt.sel{border-color:var(--purple); background:#f1ebff; box-shadow:0 4px 0 #d9ccff}
+.opt.sel .l{background:var(--purple); color:#fff}
+.q.pgk .opt.sel{border-color:var(--teal); background:#e6faf4; box-shadow:0 4px 0 #bdeedf}
+.q.pgk .opt.sel .l{background:var(--teal)}
+.q.pgk .opt .l{border-radius:10px}
+.opt.dis{opacity:.45; cursor:not-allowed}
+.hint{font-weight:700; font-size:14px; color:var(--muted); margin-top:4px}
+
+.st{display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; padding:10px 12px; border-radius:14px; margin:8px 0; background:#fffaf0; border:2px solid #ffe8bf}
+.st .n{display:inline-block; font-weight:800; color:var(--orange); margin-right:6px}
+.bsb{display:flex; gap:6px}
+.bsb label{cursor:pointer}
+.bsb input{position:absolute; opacity:0; pointer-events:none}
+.bsb span{display:block; padding:8px 14px; border-radius:999px; font:700 15px 'Fredoka',sans-serif; background:#fff; border:3px solid var(--line); color:var(--muted)}
+.bsb input[value=B]:checked + span{background:#00b894; border-color:#00b894; color:#fff}
+.bsb input[value=S]:checked + span{background:#ff5c8a; border-color:#ff5c8a; color:#fff}
+@media(max-width:560px){
+  .st{grid-template-columns:1fr}.bsb{justify-content:flex-start}
+  .topin{padding:6px 12px; gap:6px}
+  .who{flex:1 1 100%; min-width:0; display:flex; gap:8px; align-items:baseline; font-size:15px}
+  .who small{display:inline; font-size:13px}
+  .pill{font-size:14px; padding:3px 10px}
+  .nav{padding:6px 12px}
+  .nav a{width:30px; height:30px; font-size:13px}
+  .q{scroll-margin-top:118px; padding:16px}
+  .card{padding:18px}
+  .score{font-size:13px}
+}
+
+.submitbox{text-align:center; margin-top:34px; padding:30px 20px; background:linear-gradient(135deg,#fff2c2,#ffd9ea); border-radius:var(--radius); border:4px dashed var(--orange)}
+.submitbox p{margin:8px 0 18px; font-weight:700}
+.sendmsg{margin-top:14px; font-weight:800}
+.sendmsg.bad{color:#d6336c}
+
+/* ---------- selesai ---------- */
+.done{text-align:center; padding:34px 20px}
+.done .big{font-size:88px; line-height:1; animation:bounce 1.6s infinite; display:inline-block}
+.done h1{color:#079a77; font-size:clamp(28px,6vw,38px); margin-top:10px}
+.done dl{display:inline-grid; grid-template-columns:auto auto; gap:6px 18px; text-align:left; margin:18px 0 0; padding:14px 22px; background:#f1fbf8; border-radius:16px}
+.done dt{color:var(--muted); font-weight:800} .done dd{margin:0; font-weight:800}
+
+/* ---------- modal & toast ---------- */
+.ov{position:fixed; inset:0; background:rgba(43,42,76,.55); z-index:100; display:grid; place-items:center; padding:16px}
+.modal{background:#fff; border-radius:24px; padding:26px; max-width:440px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3); animation:pop .22s}
+@keyframes pop{from{transform:scale(.88); opacity:0}}
+.modal .em{font-size:52px; line-height:1}
+.modal h3{font-size:24px; margin:8px 0}
+.modal p{margin:6px 0 0; font-weight:700; color:var(--muted)}
+.modal .row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:20px}
+.toast{
+  position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:90; background:#d6336c; color:#fff;
+  padding:12px 20px; border-radius:16px; font-weight:800; box-shadow:0 10px 30px rgba(214,51,108,.4); max-width:92vw; text-align:center;
+}
+.foot{text-align:center; color:var(--muted); font-weight:700; font-size:14px; margin-top:26px}
+.demo{background:#e1f1ff; border:2px dashed var(--blue); padding:8px 12px; border-radius:12px; margin-top:12px; font-weight:700; font-size:14px; text-align:center}
+</style>
+</head>
+<body>
+<div class="deco" aria-hidden="true"><span>⚗️</span><span>🧪</span><span>⚡</span><span>🔋</span><span>✨</span></div>
+<noscript><div class="wrap"><div class="card">Halaman ini membutuhkan JavaScript. Aktifkan JavaScript pada peramban Anda.</div></div></noscript>
+
+<main>
+  <!-- ======== 1. LOGIN ======== -->
+  <section id="s-login" class="wrap">
+    <div class="hero">
+      <div class="mascot">🧪</div>
+      <h1>Asesmen Sumatif Kimia</h1>
+      <p>Kelas XII · Fase F · SMAN 1 Tanjung · TP 2026/2027</p>
+      <div class="chips"><span class="chip c1">📚 25 soal</span><span class="chip c2">⏳ Tanpa batas waktu</span><span class="chip c3">⭐ Skor total 35</span></div>
+    </div>
+    <div class="card" id="loginCard">
+      <h2>Halo, Sahabat Kimia! 👋</h2>
+      <p style="margin:4px 0 0;color:var(--muted);font-weight:700">Isi namamu dulu ya, lalu masuk.</p>
+      <label class="f" for="nama">Nama lengkap</label>
+      <input class="t" id="nama" autocomplete="name" placeholder="Contoh: Siti Aisyah" maxlength="60">
+      <label class="f" for="kelas">Kelas</label>
+      <input class="t" id="kelas" autocomplete="off" placeholder="Contoh: XII MIPA 1" maxlength="30">
+      <div class="err" id="loginErr"></div>
+      <div style="text-align:center;margin-top:10px"><button class="btn big" id="btnLogin">Masuk 🚀</button></div>
+    </div>
+    <div class="foot">Guru mata pelajaran: Kiky Astyana, S.Pd</div>
+  </section>
+
+  <!-- ======== 2. PETUNJUK + TOKEN ======== -->
+  <section id="s-intro" class="wrap hidden">
+    <div class="hero">
+      <div class="mascot">📋</div>
+      <h1>Petunjuk Pengerjaan</h1>
+      <p id="introHello"></p>
+    </div>
+    <div class="card">
+      <ol class="rules">
+        <li>Berdoalah sebelum mengerjakan, lalu baca setiap wacana, informasi, atau data dengan teliti.</li>
+        <li><b>Tidak ada batasan waktu</b> pengerjaan. Kerjakan dengan tenang dan teliti.</li>
+        <li><b>Bagian A (No. 1–15), pilihan ganda:</b> pilih satu jawaban yang paling tepat. Skor tiap soal 1.</li>
+        <li><b>Bagian B (No. 16–20), benar–salah:</b> tentukan setiap pernyataan Benar atau Salah. Skor tiap soal 2, dan <b>setiap pernyataan yang kamu jawab benar tetap mendapat poin</b> (0,5 per pernyataan).</li>
+        <li><b>Bagian C (No. 21–25), pilihan ganda kompleks:</b> pilih sebanyak jumlah jawaban yang diminta (2 atau 3). Skor tiap soal 2, dan <b>setiap jawaban benar tetap mendapat poin</b>.</li>
+        <li>Jawaban boleh diubah sebelum kamu menekan tombol Kirim. <b>Mengubah jawaban bukan pelanggaran.</b></li>
+        <li><b>Jangan keluar dari halaman ujian</b> (pindah tab, membuka aplikasi lain, atau memuat ulang halaman). Setiap kali keluar akan <b>tercatat dan dilaporkan ke guru</b>.</li>
+        <li>Setelah semua soal dijawab, tekan tombol <b>Kirim Jawaban</b> di bagian paling bawah dan tunggu sampai muncul informasi bahwa jawabanmu sudah terkirim.</li>
+        <li>Kerjakan secara mandiri dan jujur. Semangat! 💪</li>
+      </ol>
+      <div class="note">Data bantu: Ar H = 1; O = 16; Cu = 63,5; Zn = 65; Ag = 108. Tetapan Faraday (F) = 96.500 C/mol e⁻. Volume molar gas pada STP = 22,4 L/mol.</div>
+      <div class="tokenbox">
+        <h3 style="text-align:center">🔑 Masukkan Token Ujian</h3>
+        <p style="text-align:center;margin:4px 0 12px;font-weight:700;color:var(--muted)">Token diberikan oleh guru pengawas.</p>
+        <input class="t" id="token" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="TOKEN" maxlength="20">
+        <div class="err" id="tokenErr" style="text-align:center"></div>
+        <div style="text-align:center;margin-top:8px"><button class="btn big green" id="btnStart">Mulai Mengerjakan ✏️</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 3. UJIAN ======== -->
+  <section id="s-exam" class="hidden">
+    <div class="topbar">
+      <div class="topin">
+        <div class="who"><span id="whoName"></span><small id="whoClass"></small></div>
+        <span class="pill" id="pillDone">0/25 terjawab</span>
+        <span class="pill warn hidden" id="pillViol">Keluar halaman: 0×</span>
+      </div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="nav" id="nav"></div>
+    </div>
+    <div class="wrap" style="padding-top:8px">
+      <div class="note">Data bantu: Ar H = 1; O = 16; Cu = 63,5; Zn = 65; Ag = 108. F = 96.500 C/mol e⁻. Volume molar STP = 22,4 L/mol.</div>
+      <div id="paper"></div>
+      <div class="submitbox">
+        <h2>Sudah selesai? 🎉</h2>
+        <p>Periksa lagi jawabanmu, lalu tekan tombol di bawah untuk mengirim.</p>
+        <button class="btn big" id="btnSubmit">Kirim Jawaban 📨</button>
+        <div class="sendmsg" id="sendMsg"></div>
+      </div>
+      <div class="demo hidden" id="demoNote">Mode uji coba: alamat Apps Script belum diisi, jawaban belum dikirim ke spreadsheet.</div>
+    </div>
+  </section>
+
+  <!-- ======== 4. SELESAI ======== -->
+  <section id="s-done" class="wrap hidden">
+    <div class="card done">
+      <div class="big">🎉</div>
+      <h1>Jawabanmu sudah terkirim!</h1>
+      <p style="font-weight:700;color:var(--muted)">Data jawabanmu sudah tercatat di sistem guru. Kamu boleh menutup halaman ini.</p>
+      <dl>
+        <dt>Nama</dt><dd id="dNama"></dd>
+        <dt>Kelas</dt><dd id="dKelas"></dd>
+        <dt>Waktu kirim</dt><dd id="dWaktu"></dd>
+        <dt>Soal terjawab</dt><dd id="dJawab"></dd>
+        <dt>Keluar halaman</dt><dd id="dViol"></dd>
+      </dl>
+      <p style="margin-top:22px;font-weight:800;color:var(--purple-d)">Terima kasih sudah mengerjakan dengan jujur! ⭐</p>
+    </div>
+  </section>
+</main>
+
+<script>
+/* =====================================================================
+   PENGATURAN — ubah bagian ini saja
+   ===================================================================== */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWXQdkT1tQ4YDfkceD6a9GWxPU6ZogMktyWmQL7DTKUSWyJVoalxajN4UpIfsbt227/exec';          // tempel URL Web App Apps Script (…/exec) di antara tanda kutip
+const TOKEN_B64       = 'U0JWQ1REUw=='; // token "SBVCTDS" (disandikan base64)
+const STORAGE_KEY     = 'sumatif_kimia_xii_2026';
+
+/* =====================================================================
+   DATA SOAL  (kunci jawaban TIDAK ada di sini; penilaian dilakukan di Apps Script)
+   ===================================================================== */
+const T = (head, rows) =>
+  '<div class="tablewrap"><table class="d"><tr>' + head.map(h => '<th>' + h + '</th>').join('') + '</tr>' +
+  rows.map(r => '<tr>' + r.map(c => '<td>' + c + '</td>').join('') + '</tr>').join('') + '</table></div>';
+const RX = s => '<div class="rx">' + s + '</div>';
+const EH = ['Setengah reaksi reduksi', 'E° (V)'];
+
+const SOAL = [
+/* ---------------- BAGIAN A : PILIHAN GANDA ---------------- */
+{no:1,type:'pg',
+ body:'<p>Besi diperoleh dari bijihnya di dalam tanur tinggi melalui reaksi berikut.</p>'+RX('Fe₂O₃(s) + 3CO(g) → 2Fe(s) + 3CO₂(g)'),
+ q:'Pernyataan yang tepat tentang reaksi tersebut adalah …',
+ opts:['Fe₂O₃ merupakan reduktor karena bilangan oksidasi Fe turun dari +3 menjadi 0',
+       'CO merupakan oksidator karena bilangan oksidasi C turun dari +4 menjadi +2',
+       'CO merupakan reduktor karena bilangan oksidasi C naik dari +2 menjadi +4',
+       'Fe merupakan hasil oksidasi karena bilangan oksidasi Fe naik dari 0 menjadi +3',
+       'CO₂ merupakan hasil reduksi karena bilangan oksidasi C turun dari +4 menjadi +2']},
+{no:2,type:'pg',
+ body:'<p>Mangan membentuk beberapa senyawa yang dimanfaatkan dalam kehidupan sehari-hari: KMnO₄ sebagai antiseptik, MnO₂ pada baterai kering, K₂MnO₄ sebagai zat antara pembuatan KMnO₄, dan MnSO₄ sebagai bahan pupuk mikro.</p>',
+ q:'Urutan bilangan oksidasi Mn dari yang terkecil ke yang terbesar adalah …',
+ opts:['MnSO₄ &lt; MnO₂ &lt; K₂MnO₄ &lt; KMnO₄','KMnO₄ &lt; K₂MnO₄ &lt; MnO₂ &lt; MnSO₄','MnO₂ &lt; MnSO₄ &lt; KMnO₄ &lt; K₂MnO₄',
+       'MnSO₄ &lt; K₂MnO₄ &lt; MnO₂ &lt; KMnO₄','MnO₂ &lt; MnSO₄ &lt; K₂MnO₄ &lt; KMnO₄']},
+{no:3,type:'pg',
+ body:'<p>Gas klorin di laboratorium dapat dibuat dengan memanaskan mangan(IV) oksida bersama asam klorida pekat. Reaksi yang terjadi (belum setara):</p>'+RX('MnO₂(s) + HCl(aq) → MnCl₂(aq) + Cl₂(g) + H₂O(l)'),
+ q:'Setelah reaksi disetarakan, koefisien HCl, Cl₂, dan H₂O berturut-turut adalah …',
+ opts:['2, 1, 1','4, 1, 2','4, 2, 1','6, 1, 3','3, 1, 2']},
+{no:4,type:'pg',
+ body:'<p>Pemutih pakaian yang mengandung natrium hipoklorit dibuat dengan mengalirkan gas klorin ke dalam larutan natrium hidroksida.</p>'+RX('Cl₂(g) + 2NaOH(aq) → NaCl(aq) + NaClO(aq) + H₂O(l)'),
+ q:'Pernyataan yang paling tepat tentang reaksi tersebut adalah …',
+ opts:['Reaksi redoks biasa karena Cl₂ hanya mengalami oksidasi','Reaksi asam–basa karena melibatkan NaOH',
+       'Reaksi redoks karena Cl₂ tereduksi menjadi ClO⁻ dan teroksidasi menjadi Cl⁻',
+       'Reaksi autoredoks karena Cl₂ tereduksi menjadi Cl⁻ (biloks −1) dan teroksidasi menjadi ClO⁻ (biloks +1)',
+       'Bukan reaksi redoks karena tidak ada perubahan bilangan oksidasi pada Na']},
+{no:5,type:'pg',
+ body:'<p>Butiran seng dimasukkan ke dalam larutan asam klorida. Seng larut dan terbentuk gelembung gas hidrogen menurut reaksi berikut.</p>'+RX('Zn(s) + 2HCl(aq) → ZnCl₂(aq) + H₂(g)'),
+ q:'Zat yang bertindak sebagai oksidator beserta perubahan bilangan oksidasinya adalah …',
+ opts:['Zn; 0 → +2','HCl; +1 → 0','Zn; +2 → 0','HCl; 0 → +1','ZnCl₂; +2 → 0']},
+{no:6,type:'pg',
+ body:'<p>Seorang siswa merangkai sel Volta dari batang magnesium yang dicelupkan ke larutan MgSO₄ dan batang tembaga yang dicelupkan ke larutan CuSO₄, dihubungkan dengan jembatan garam. Setelah beberapa menit, batang Mg tampak menipis dan batang Cu tampak menebal.</p>',
+ q:'Pernyataan yang tepat tentang pengamatan tersebut adalah …',
+ opts:['Mg sebagai katode karena menipis; elektron mengalir dari Cu ke Mg','Cu sebagai anode karena menebal; Cu²⁺ teroksidasi menjadi Cu',
+       'Mg sebagai anode karena teroksidasi; elektron mengalir dari Cu ke Mg',
+       'Mg sebagai anode karena teroksidasi; Cu sebagai katode tempat Cu²⁺ direduksi menjadi Cu; elektron mengalir dari Mg ke Cu',
+       'Mg sebagai katode karena teroksidasi; elektron mengalir dari Mg ke Cu']},
+{no:7,type:'pg',
+ body:'<p>Seorang siswa merancang sel Volta dari elektrode seng dan perak dengan data potensial reduksi standar sebagai berikut.</p>'+T(EH,[['Zn²⁺ + 2e⁻ → Zn','−0,76'],['Ag⁺ + e⁻ → Ag','+0,80']]),
+ q:'Notasi sel dan potensial sel standar yang benar adalah …',
+ opts:['Ag | Ag⁺ || Zn²⁺ | Zn; E°sel = 1,56 V','Ag | Ag⁺ || Zn²⁺ | Zn; E°sel = 0,04 V','Zn | Zn²⁺ || Ag⁺ | Ag; E°sel = 0,04 V',
+       'Zn²⁺ | Zn || Ag | Ag⁺; E°sel = 1,56 V','Zn | Zn²⁺ || Ag⁺ | Ag; E°sel = 1,56 V']},
+{no:8,type:'pg',
+ body:'<p>Seorang siswa mempelajari reaksi yang dapat berlangsung spontan menggunakan data potensial elektrode standar berikut.</p>'+
+   T(EH,[['Al³⁺ + 3e⁻ → Al','−1,66'],['Ni²⁺ + 2e⁻ → Ni','−0,25'],['Cu²⁺ + 2e⁻ → Cu','+0,34'],['Ag⁺ + e⁻ → Ag','+0,80']]),
+ q:'Reaksi yang berlangsung spontan pada kondisi standar adalah …',
+ opts:['Ni + Cu²⁺ → Ni²⁺ + Cu','Cu + Al³⁺ → Cu²⁺ + Al','Ag + Ni²⁺ → Ag⁺ + Ni','Ni + Al³⁺ → Ni²⁺ + Al','Ag + Al³⁺ → Ag⁺ + Al']},
+{no:9,type:'pg',
+ body:'<p>Sel Volta dirangkai dari elektrode besi dalam larutan FeSO₄ dan elektrode tembaga dalam larutan CuSO₄, dihubungkan dengan jembatan garam KNO₃. Diketahui E° Fe²⁺|Fe = −0,44 V dan E° Cu²⁺|Cu = +0,34 V.</p>',
+ q:'Pernyataan yang benar tentang sel tersebut adalah …',
+ opts:['Cu bertindak sebagai anode sehingga massanya berkurang',
+       'Elektron mengalir dari elektrode Fe ke elektrode Cu melalui kawat dan massa elektrode Fe berkurang',
+       'Fe bertindak sebagai katode karena mengalami reduksi','Ion NO₃⁻ dari jembatan garam bergerak menuju setengah sel Cu',
+       'Potensial sel standar yang dihasilkan sebesar 0,10 V']},
+{no:10,type:'pg',
+ body:'<p>Larutan KI dielektrolisis dengan elektrode karbon (inert). Setelah beberapa menit, larutan di sekitar anode berubah menjadi cokelat, sedangkan di sekitar katode terbentuk gelembung gas dan larutan berubah menjadi merah muda setelah ditetesi indikator fenolftalein. Ion K⁺ lebih sulit direduksi daripada air.</p>',
+ q:'Reaksi yang terjadi di katode adalah …',
+ opts:['2I⁻(aq) → I₂(aq) + 2e⁻','K⁺(aq) + e⁻ → K(s)','2H₂O(l) + 2e⁻ → H₂(g) + 2OH⁻(aq)','2H₂O(l) → O₂(g) + 4H⁺(aq) + 4e⁻','I₂(aq) + 2e⁻ → 2I⁻(aq)']},
+{no:11,type:'pg',
+ body:'<p>Besi galvanis dibuat dengan melapisi baja menggunakan seng melalui elektrolisis larutan ZnSO₄. Proses dilakukan dengan arus 9,65 A selama 1.000 detik (Ar Zn = 65; F = 96.500 C/mol).</p>',
+ q:'Massa seng yang melapisi baja di katode adalah …',
+ opts:['0,65 g','1,63 g','2,60 g','3,25 g','6,50 g']},
+{no:12,type:'pg',
+ body:'<p>Pada industri klor-alkali, larutan NaCl pekat dielektrolisis dengan elektrode karbon (inert) untuk menghasilkan gas klorin, gas hidrogen, dan larutan NaOH. Data potensial reduksi: Na⁺ + e⁻ → Na (E° = −2,71 V) dan 2H₂O + 2e⁻ → H₂ + 2OH⁻ (E° = −0,83 V). Pada larutan NaCl pekat, ion Cl⁻ lebih mudah teroksidasi daripada H₂O.</p>',
+ q:'Hasil elektrolisis pada katode dan anode adalah …',
+ opts:['Katode: Na; anode: Cl₂','Katode: Na; anode: O₂','Katode: H₂; anode: O₂','Katode: H₂; anode: Cl₂, dan larutan di sekitar anode bersifat basa','Katode: H₂ dan OH⁻; anode: Cl₂']},
+{no:13,type:'pg',
+ body:'<p>Larutan CuSO₄ dielektrolisis dengan elektrode platina menggunakan arus 10 A selama 965 detik. Reaksi di anode:</p>'+RX('2H₂O(l) → O₂(g) + 4H⁺(aq) + 4e⁻'),
+ q:'Volume gas O₂ yang terbentuk di anode pada keadaan STP adalah … (F = 96.500 C/mol; volume molar STP = 22,4 L/mol)',
+ opts:['0,14 L','0,28 L','0,56 L','1,12 L','2,24 L']},
+{no:14,type:'pg',
+ body:'<p>Lima paku besi yang sama ditempatkan pada kondisi berbeda dan didiamkan selama satu minggu.</p>'+
+   T(['Tabung','Kondisi paku'],[['1','Dilapisi oli, dibiarkan di udara terbuka'],['2','Dalam tabung tertutup berisi kalsium klorida anhidrat (penyerap uap air)'],
+     ['3','Dalam air laut, tabung dibiarkan terbuka'],['4','Dalam air biasa, tabung dibiarkan terbuka'],['5','Dalam air yang telah dididihkan, permukaan air ditutup lapisan minyak']]),
+ q:'Paku yang paling cepat berkarat terdapat pada tabung …',
+ opts:['1','2','3','4','5']},
+{no:15,type:'pg',
+ body:'<p>Tangki baja penyimpan air di pelabuhan dilindungi dari korosi dengan menghubungkannya ke sepotong logam lain yang berperan sebagai anode korban. Data potensial reduksi standar beberapa logam:</p>'+
+   T(EH,[['Ag⁺ + e⁻ → Ag','+0,80'],['Cu²⁺ + 2e⁻ → Cu','+0,34'],['Pb²⁺ + 2e⁻ → Pb','−0,13'],['Ni²⁺ + 2e⁻ → Ni','−0,25'],['Fe²⁺ + 2e⁻ → Fe','−0,44'],['Al³⁺ + 3e⁻ → Al','−1,66']]),
+ q:'Logam yang tepat digunakan sebagai anode korban untuk melindungi tangki baja tersebut adalah …',
+ opts:['Cu','Ni','Ag','Al','Pb']},
+
+/* ---------------- BAGIAN B : BENAR – SALAH ---------------- */
+{no:16,type:'bs',
+ body:'<p>Kadar asam oksalat dalam suatu sampel dapat ditentukan dengan titrasi menggunakan larutan KMnO₄ dalam suasana asam. Reaksi yang terjadi (belum setara):</p>'+RX('MnO₄⁻(aq) + C₂O₄²⁻(aq) + H⁺(aq) → Mn²⁺(aq) + CO₂(g) + H₂O(l)'),
+ stmts:['MnO₄⁻ mengalami reduksi karena bilangan oksidasi Mn turun dari +7 menjadi +2','Setengah reaksi oksidasinya adalah C₂O₄²⁻ → 2CO₂ + 2e⁻',
+        'Pada reaksi yang telah setara, perbandingan koefisien MnO₄⁻ : C₂O₄²⁻ adalah 1 : 1','Pada persamaan reaksi total yang telah setara, jumlah elektron yang dipindahkan adalah 10']},
+{no:17,type:'bs',
+ body:'<p>Sebuah sel Volta disusun dari elektrode aluminium dalam larutan Al³⁺ dan elektrode nikel dalam larutan Ni²⁺. Data potensial reduksi standar: E° Al³⁺|Al = −1,66 V dan E° Ni²⁺|Ni = −0,25 V.</p>',
+ stmts:['Elektrode Al bertindak sebagai anode','Potensial sel standar yang dihasilkan sebesar 1,41 V','Massa elektrode Ni berkurang selama sel bekerja','Pada katode terjadi oksidasi ion Ni²⁺']},
+{no:18,type:'bs',
+ body:'<p>Seorang siswa merangkai sel Daniell: elektrode Zn dalam larutan ZnSO₄ 1 M dan elektrode Cu dalam larutan CuSO₄ 1 M, dihubungkan dengan jembatan garam yang berisi larutan KNO₃. Data potensial reduksi standar: E° Zn²⁺|Zn = −0,76 V dan E° Cu²⁺|Cu = +0,34 V.</p>',
+ stmts:['Jembatan garam berfungsi menjaga kenetralan muatan larutan pada kedua setengah sel','Tanpa jembatan garam, arus listrik tetap dapat mengalir lama dengan besar yang sama',
+        'Ion K⁺ bergerak menuju setengah sel Cu dan ion NO₃⁻ bergerak menuju setengah sel Zn','Elektrode Cu bertindak sebagai anode karena E° Cu lebih besar daripada E° Zn']},
+{no:19,type:'bs',
+ body:'<p>Tembaga hasil peleburan masih mengandung pengotor berupa logam Zn, Fe, Ag, dan Au. Untuk memurnikannya, tembaga kotor dijadikan anode dan tembaga murni dijadikan katode dalam larutan CuSO₄. Data E°: Zn²⁺|Zn = −0,76 V; Fe²⁺|Fe = −0,44 V; Cu²⁺|Cu = +0,34 V; Ag⁺|Ag = +0,80 V; Au³⁺|Au = +1,50 V.</p>',
+ stmts:['Tembaga kotor di anode mengalami oksidasi menjadi ion Cu²⁺','Pada katode terjadi oksidasi Cu menjadi Cu²⁺','Ag dan Au tidak teroksidasi sehingga jatuh sebagai lumpur anode','Massa elektrode katode berkurang selama proses berlangsung']},
+{no:20,type:'bs',
+ body:'<p>Tangki baja penyimpan bahan bakar yang ditanam di dalam tanah dilindungi dengan metode arus paksa: tangki dihubungkan ke sumber arus searah, sedangkan batang grafit yang ditanam di dekat tangki dihubungkan ke kutub lainnya. Diketahui E° Fe²⁺|Fe = −0,44 V.</p>',
+ stmts:['Tangki baja harus dihubungkan ke kutub negatif sumber arus','Tangki baja berperan sebagai katode sehingga tidak teroksidasi',
+        'Jika tangki dihubungkan ke kutub positif, korosi baja justru terhambat','Agar berfungsi, elektrode pasangan harus berupa logam yang E°-nya lebih kecil daripada −0,44 V']},
+
+/* ---------------- BAGIAN C : PILIHAN GANDA KOMPLEKS ---------------- */
+{no:21,type:'pgk',pick:2,
+ body:'<p>Data potensial reduksi standar beberapa logam disajikan pada tabel berikut.</p>'+
+   T(EH,[['Al³⁺ + 3e⁻ → Al','−1,66'],['Ni²⁺ + 2e⁻ → Ni','−0,25'],['Cu²⁺ + 2e⁻ → Cu','+0,34'],['Ag⁺ + e⁻ → Ag','+0,80']]),
+ q:'Berdasarkan data tersebut, pilihlah dua pernyataan yang benar!',
+ opts:['Pasangan elektrode Al dan Ag menghasilkan E°sel sebesar 2,46 V','Pasangan elektrode Ni dan Cu menghasilkan E°sel sebesar 0,09 V',
+       'Ag merupakan reduktor terkuat di antara keempat logam','Logam Cu dapat mereduksi ion Ni²⁺ menjadi Ni','Logam Ni dapat mereduksi ion Cu²⁺ menjadi Cu']},
+{no:22,type:'pgk',pick:2,
+ body:'<p>Sebuah sendok besi akan disepuh dengan nikel melalui elektrolisis larutan NiSO₄ agar tampak mengilap dan lebih tahan korosi.</p>',
+ q:'Pilihlah dua pernyataan yang benar tentang proses penyepuhan tersebut!',
+ opts:['Sendok besi dipasang sebagai katode','Sendok besi dipasang sebagai anode','Logam nikel dipasang sebagai anode dan teroksidasi menjadi Ni²⁺',
+       'Pada katode terjadi reaksi Ni(s) → Ni²⁺(aq) + 2e⁻','Elektrode yang digunakan harus inert (platina) agar nikel dapat mengendap']},
+{no:23,type:'pgk',pick:2,
+ body:'<p>Dua sel elektrolisis disusun seri sehingga dialiri arus yang sama. Sel I berisi larutan AgNO₃ dan sel II berisi larutan CuSO₄, semua elektrode dari platina. Setelah beberapa waktu, terbentuk 2,16 g perak di katode sel I. (Ar Ag = 108; Cu = 63,5; F = 96.500 C/mol)</p>',
+ q:'Pilihlah dua pernyataan yang benar!',
+ opts:['Jumlah mol elektron yang mengalir adalah 0,02 mol','Massa tembaga yang mengendap di katode sel II adalah 1,27 g','Massa tembaga yang mengendap di katode sel II adalah 0,635 g',
+       'Massa Ag dan Cu yang mengendap sama besar karena arus yang mengalir sama','Muatan listrik yang mengalir melalui setiap sel adalah 965 C']},
+{no:24,type:'pgk',pick:2,
+ body:'<p>Seorang siswa meneliti pengaruh pH larutan terhadap korosi besi. Paku besi identik direndam dalam larutan dengan pH berbeda pada suhu yang sama, lalu laju korosi diukur dari berkurangnya massa paku.</p>'+
+   T(['pH larutan','Laju korosi (mg/hari)'],[['3','8,5'],['5','4,0'],['7','2,1'],['9','0,9'],['11','0,2']]),
+ q:'Berdasarkan data tersebut, pilihlah dua pernyataan yang benar!',
+ opts:['Laju korosi besi menurun seiring naiknya pH larutan','Besi paling terlindungi dari korosi pada suasana asam',
+       'Dalam suasana asam, ion H⁺ dapat ikut mengoksidasi besi sehingga korosi berlangsung lebih cepat','Korosi besi tidak dipengaruhi oleh pH larutan',
+       'Pada pH 11 korosi terhenti total karena besi tidak dapat teroksidasi']},
+{no:25,type:'pgk',pick:3,
+ body:'<p>Baling-baling dan lambung kapal baja (Fe) akan dihubungkan dengan logam lain di air laut. Data potensial reduksi standar:</p>'+
+   T(EH,[['Al³⁺ + 3e⁻ → Al','−1,66'],['Mn²⁺ + 2e⁻ → Mn','−1,18'],['Fe²⁺ + 2e⁻ → Fe','−0,44'],['Ni²⁺ + 2e⁻ → Ni','−0,25'],['Ag⁺ + e⁻ → Ag','+0,80']]),
+ q:'Pilihlah tiga pernyataan yang benar!',
+ opts:['Fe yang berkontak dengan Al terlindungi dari korosi karena Al bertindak sebagai anode','Pada pasangan Fe–Ni, Fe bertindak sebagai katode sehingga tidak berkarat',
+       'Pada pasangan Fe–Mn, potensial sel yang terbentuk sebesar 0,74 V','Pada pasangan Fe–Ag, Fe teroksidasi dan berkarat lebih cepat dibandingkan Fe tanpa kontak logam lain',
+       'Ni paling efektif melindungi Fe karena E° Ni paling dekat dengan E° Fe']}
+];
+
+const SEKSI = {
+  1:{cls:'a',h:'Bagian A · Pilihan Ganda',p:'Soal 1–15 · pilih 1 jawaban yang paling tepat · skor tiap soal 1 (maks 15)'},
+  16:{cls:'b',h:'Bagian B · Benar – Salah',p:'Soal 16–20 · tentukan tiap pernyataan Benar atau Salah · skor tiap soal 2 (maks 10)'},
+  21:{cls:'c',h:'Bagian C · Pilihan Ganda Kompleks',p:'Soal 21–25 · pilih sebanyak jumlah jawaban yang diminta · skor tiap soal 2 (maks 10)'}
+};
+const L = ['A','B','C','D','E'];
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+let S = {sid:'', nama:'', kelas:'', started:false, startTs:0, ans:{}, viol:0, vlog:[], submitted:false, submitTs:0, answeredCount:0};
+let examActive = false, away = false, timerId = null, sending = false;
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2,'0');
+
+function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
+function show(id){ ['s-login','s-intro','s-exam','s-done'].forEach(x => $(x).classList.toggle('hidden', x !== id)); window.scrollTo(0,0); }
+function fmtTime(ts){ const d = new Date(ts); return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}) + ' ' + pad(d.getHours()) + '.' + pad(d.getMinutes()) + '.' + pad(d.getSeconds()); }
+function newSid(){ return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 's' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+/* =====================================================================
+   KOMUNIKASI KE APPS SCRIPT
+   ===================================================================== */
+async function post(payload, keepalive){
+  if(!APPS_SCRIPT_URL) return {status:'demo'};
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload), keepalive: !!keepalive, redirect:'follow'
+  });
+  return await res.json();
+}
+function base(action){ return {action, sid:S.sid, nama:S.nama, kelas:S.kelas, violations:S.viol, vlog:S.vlog, startTs:S.startTs}; }
+function sendStart(){ post(base('start')).catch(()=>{}); }
+function sendViolation(){ post(base('violation'), true).catch(()=>{}); }
+
+/* =====================================================================
+   RENDER SOAL
+   ===================================================================== */
+function scoreLabel(q){
+  if(q.type==='pg')  return '⭐ Skor 1';
+  if(q.type==='bs')  return '⭐ Skor maks 2 · tiap pernyataan benar +0,5';
+  return '⭐ Skor maks 2 · tiap jawaban benar +' + (q.pick===3 ? '0,67' : '1');
+}
+function render(){
+  let html = '';
+  SOAL.forEach(q => {
+    if(SEKSI[q.no]){ const s = SEKSI[q.no]; html += `<div class="sec ${s.cls}"><h2>${s.h}</h2><p>${s.p}</p></div>`; }
+    html += `<article class="card q ${q.type}" id="q${q.no}"><div class="qh"><span class="qno">Soal ${q.no}</span><span class="score">${scoreLabel(q)}</span><span class="status" id="st${q.no}"></span></div>`;
+    html += `<div class="body">${q.body}</div>`;
+    if(q.type==='bs'){
+      html += '<p class="ask">Tentukan setiap pernyataan berikut Benar atau Salah.</p>';
+      q.stmts.forEach((s,i) => {
+        html += `<div class="st"><div><span class="n">${i+1}.</span>${s}</div><div class="bsb">
+          <label><input type="radio" name="q${q.no}_${i}" value="B" data-no="${q.no}" data-i="${i}"><span>Benar</span></label>
+          <label><input type="radio" name="q${q.no}_${i}" value="S" data-no="${q.no}" data-i="${i}"><span>Salah</span></label></div></div>`;
+      });
+    } else {
+      html += `<p class="ask">${q.q}</p>`;
+      q.opts.forEach((o,i) => {
+        html += `<label class="opt" id="o${q.no}_${L[i]}"><input type="${q.type==='pg'?'radio':'checkbox'}" name="q${q.no}" value="${L[i]}" data-no="${q.no}"><span class="l">${L[i]}</span><span>${o}</span></label>`;
+      });
+      if(q.type==='pgk') html += `<div class="hint" id="h${q.no}">Pilih ${q.pick} jawaban. Terpilih: 0/${q.pick}</div>`;
+    }
+    html += '</article>';
+  });
+  $('paper').innerHTML = html;
+
+  let nav = '';
+  SOAL.forEach(q => { if(q.no===16||q.no===21) nav += '<a class="sep"></a>'; nav += `<a href="#q${q.no}" id="n${q.no}">${q.no}</a>`; });
+  $('nav').innerHTML = nav;
+
+  $('paper').addEventListener('change', onChange);
+  restoreInputs();
+  refreshAll();
+}
+
+function onChange(e){
+  const t = e.target; if(!t.dataset || !t.dataset.no) return;
+  const no = +t.dataset.no, q = SOAL.find(x => x.no === no);
+  if(S.submitted || !examActive) return;
+  if(q.type==='pg') S.ans[no] = t.value;
+  else if(q.type==='bs'){ const a = S.ans[no] || [null,null,null,null]; a[+t.dataset.i] = t.value; S.ans[no] = a; }
+  else {
+    const boxes = [...document.querySelectorAll(`input[name="q${no}"]`)];
+    let sel = boxes.filter(b => b.checked).map(b => b.value);
+    if(sel.length > q.pick){ t.checked = false; sel = sel.filter(v => v !== t.value); }
+    S.ans[no] = sel;
+  }
+  save(); refreshQ(q); refreshProgress();
+}
+function restoreInputs(){
+  SOAL.forEach(q => {
+    const a = S.ans[q.no]; if(!a) return;
+    if(q.type==='pg'){ const el = document.querySelector(`input[name="q${q.no}"][value="${a}"]`); if(el) el.checked = true; }
+    else if(q.type==='bs'){ a.forEach((v,i) => { if(!v) return; const el = document.querySelector(`input[name="q${q.no}_${i}"][value="${v}"]`); if(el) el.checked = true; }); }
+    else a.forEach(v => { const el = document.querySelector(`input[name="q${q.no}"][value="${v}"]`); if(el) el.checked = true; });
+  });
+}
+function qState(q){   // 0 kosong, 1 sebagian, 2 lengkap
+  const a = S.ans[q.no];
+  if(q.type==='pg') return a ? 2 : 0;
+  if(q.type==='bs'){ const n = (a||[]).filter(Boolean).length; return n===0 ? 0 : n===4 ? 2 : 1; }
+  const n = (a||[]).length; return n===0 ? 0 : n===q.pick ? 2 : 1;
+}
+function refreshQ(q){
+  const st = qState(q), el = $('st'+q.no), nv = $('n'+q.no);
+  el.textContent = st===2 ? '✔ terjawab' : st===1 ? '… belum lengkap' : '';
+  el.className = 'status' + (st===2 ? ' ok' : '');
+  nv.className = st===2 ? 'full' : st===1 ? 'part' : '';
+  if(q.type==='pg') q.opts.forEach((_,i) => $(`o${q.no}_${L[i]}`).classList.toggle('sel', S.ans[q.no] === L[i]));
+  if(q.type==='pgk'){
+    const sel = S.ans[q.no] || [];
+    q.opts.forEach((_,i) => {
+      const lab = $(`o${q.no}_${L[i]}`), on = sel.includes(L[i]);
+      lab.classList.toggle('sel', on);
+      lab.classList.toggle('dis', !on && sel.length >= q.pick);
+      lab.querySelector('input').disabled = (!on && sel.length >= q.pick);
+    });
+    $('h'+q.no).textContent = `Pilih ${q.pick} jawaban. Terpilih: ${sel.length}/${q.pick}` + (sel.length >= q.pick ? ' — hapus centang untuk mengganti' : '');
+  }
+}
+function countAnswered(){ return SOAL.filter(q => qState(q) === 2).length; }
+function refreshProgress(){
+  const n = countAnswered();
+  $('pillDone').textContent = n + '/' + SOAL.length + ' terjawab';
+  $('barFill').style.width = (n / SOAL.length * 100) + '%';
+}
+function refreshAll(){ SOAL.forEach(refreshQ); refreshProgress(); refreshViol(); }
+function refreshViol(){
+  const p = $('pillViol'); p.textContent = 'Keluar halaman: ' + S.viol + '×';
+  p.classList.toggle('hidden', S.viol === 0);
+}
+
+/* =====================================================================
+   MODAL & TOAST
+   ===================================================================== */
+function modal(o){
+  return new Promise(res => {
+    const ov = document.createElement('div'); ov.className = 'ov';
+    ov.innerHTML = `<div class="modal"><div class="em">${o.em||'✨'}</div><h3>${o.title}</h3><p>${o.text||''}</p><div class="row"></div></div>`;
+    const row = ov.querySelector('.row');
+    (o.buttons||[{t:'OK',v:true}]).forEach(b => {
+      const bt = document.createElement('button'); bt.className = 'btn ' + (b.cls||''); bt.textContent = b.t;
+      bt.onclick = () => { ov.remove(); res(b.v); }; row.appendChild(bt);
+    });
+    document.body.appendChild(ov);
+  });
+}
+let toastT = null;
+function toast(msg){
+  let t = document.querySelector('.toast'); if(t) t.remove();
+  t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t);
+  clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 5000);
+}
+
+/* =====================================================================
+   PELANGGARAN: keluar tab / jendela / halaman
+   (mengubah jawaban TIDAK dihitung)
+   ===================================================================== */
+function registerLeave(reason){
+  if(!examActive || S.submitted) return;
+  S.viol++; S.vlog.push(pad(new Date().getHours()) + ':' + pad(new Date().getMinutes()) + ':' + pad(new Date().getSeconds()) + ' ' + reason);
+  save(); refreshViol(); sendViolation();
+}
+let unloading = false;   // true saat halaman sedang dimuat ulang/ditutup (dicatat sekali saat dibuka kembali)
+function leave(reason){ if(!examActive || away || unloading) return; away = true; registerLeave(reason); }
+function back(){
+  if(!away) return; away = false;
+  if(examActive && !S.submitted) toast('⚠️ Kamu keluar dari halaman ujian. Tercatat ' + S.viol + '× dan dilaporkan ke guru.');
+}
+window.addEventListener('blur', () => leave('pindah jendela/aplikasi'));
+document.addEventListener('visibilitychange', () => { if(document.hidden) leave('pindah tab'); else back(); });
+window.addEventListener('focus', back);
+window.addEventListener('beforeunload', e => {
+  if(examActive && !S.submitted){
+    unloading = true; setTimeout(() => { unloading = false; }, 1500);   // jika peserta memilih tetap di halaman
+    e.preventDefault(); e.returnValue = '';
+  }
+});
+window.addEventListener('pagehide', () => { unloading = true; });
+window.addEventListener('pageshow', () => { unloading = false; });
+
+/* =====================================================================
+   TIMER
+   ===================================================================== */
+// Tidak ada batas waktu. Lama pengerjaan hanya dicatat (dari tombol Mulai sampai Kirim) dan dikirim ke spreadsheet.
+
+/* =====================================================================
+   ALUR
+   ===================================================================== */
+function enterExam(resumed){
+  $('whoName').textContent = S.nama; $('whoClass').textContent = 'Kelas ' + S.kelas;
+  render(); show('s-exam'); examActive = true;
+  $('demoNote').classList.toggle('hidden', !!APPS_SCRIPT_URL);
+  if(resumed){
+    registerLeave('halaman dimuat ulang / ditutup');
+    toast('Halaman dimuat ulang. Hal ini tercatat sebagai keluar halaman (' + S.viol + '×).');
+  } else { sendStart(); }
+}
+
+$('btnLogin').onclick = () => {
+  const n = $('nama').value.trim().replace(/\s+/g,' '), k = $('kelas').value.trim().replace(/\s+/g,' ');
+  if(!n || !k){ $('loginErr').textContent = 'Nama dan kelas wajib diisi ya 🙂'; const c = $('loginCard'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake'); return; }
+  $('loginErr').textContent = '';
+  S.sid = newSid(); S.nama = n; S.kelas = k; save();
+  $('introHello').textContent = 'Halo, ' + n + ' (' + k + ')! Baca dulu petunjuknya ya.';
+  show('s-intro');
+};
+['nama','kelas'].forEach(id => $(id).addEventListener('keydown', e => { if(e.key === 'Enter') $('btnLogin').click(); }));
+
+function startNow(){
+  const v = $('token').value.trim().toUpperCase().replace(/\s+/g,'');
+  if(v !== atob(TOKEN_B64)){
+    $('tokenErr').textContent = 'Token belum tepat. Cek lagi ke pengawas ya 🔍';
+    const b = document.querySelector('.tokenbox'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); return;
+  }
+  $('tokenErr').textContent = '';
+  S.started = true; S.startTs = Date.now(); S.ans = {}; S.viol = 0; S.vlog = []; save();
+  enterExam(false);
+}
+$('btnStart').onclick = startNow;
+$('token').addEventListener('keydown', e => { if(e.key === 'Enter') startNow(); });
+
+async function doSubmit(auto){
+  if(sending || S.submitted) return;
+  sending = true;
+  const btn = $('btnSubmit'), msg = $('sendMsg');
+  btn.disabled = true; btn.textContent = 'Mengirim… ⏳'; msg.className = 'sendmsg'; msg.textContent = 'Mohon tunggu, jawabanmu sedang dikirim.';
+  const payload = Object.assign(base('submit'), {submitTs: Date.now(), answers: S.ans, auto: !!auto});
+  try{
+    const r = await post(payload);
+    if(r && (r.status === 'ok' || r.status === 'demo')){
+      S.submitted = true; S.submitTs = payload.submitTs; S.answeredCount = countAnswered(); save();
+      examActive = false; clearInterval(timerId); finish(r.status === 'demo');
+    } else throw new Error((r && r.message) || 'gagal');
+  } catch(err){
+    btn.disabled = false; btn.textContent = 'Kirim Jawaban 📨'; msg.className = 'sendmsg bad';
+    msg.textContent = 'Jawaban belum terkirim. Periksa koneksi internetmu, lalu tekan Kirim lagi. Jawabanmu tetap aman di halaman ini.';
+    sending = false;
+    if(auto){ setTimeout(() => doSubmit(true), 6000); }
+    return;
+  }
+  sending = false;
+}
+function finish(demo){
+  const old = document.querySelector('.toast'); if(old) old.remove();
+  $('dNama').textContent = S.nama; $('dKelas').textContent = S.kelas; $('dWaktu').textContent = fmtTime(S.submitTs);
+  $('dJawab').textContent = S.answeredCount + ' dari ' + SOAL.length; $('dViol').textContent = S.viol + ' kali';
+  show('s-done');
+}
+$('btnSubmit').onclick = async () => {
+  const kosong = SOAL.filter(q => qState(q) !== 2).map(q => q.no);
+  const ok = await modal(kosong.length
+    ? {em:'🤔', title:'Masih ada soal yang belum lengkap', text:'Soal nomor ' + kosong.join(', ') + ' belum terjawab lengkap. Tetap kirim sekarang?', buttons:[{t:'Periksa lagi',v:false,cls:'ghost'},{t:'Tetap kirim',v:true}]}
+    : {em:'📨', title:'Kirim jawaban sekarang?', text:'Setelah dikirim, jawaban tidak bisa diubah lagi.', buttons:[{t:'Belum dulu',v:false,cls:'ghost'},{t:'Ya, kirim!',v:true,cls:'green'}]});
+  if(ok) doSubmit(false);
+};
+
+/* ---------- mulai ---------- */
+(function init(){
+  const saved = load();
+  if(saved && saved.sid){
+    S = Object.assign(S, saved);
+    if(S.submitted){ finish(); return; }
+    if(S.started){ enterExam(true); return; }
+    if(S.nama){ $('nama').value = S.nama; $('kelas').value = S.kelas; }
+  }
+  show('s-login');
+})();
+</script>
+</body>
+</html>
